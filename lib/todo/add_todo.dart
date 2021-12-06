@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/todo/todo_controller.dart';
+import 'package:todo/todo/todo_model.dart';
 
 class AddTodo extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final c = Get.find<TodoController>();
+  final TodoController c = Get.find<TodoController>();
+
+  // Ekelencek to do nesnesini tutar.
+  final TodoModel todoModel = TodoModel();
 
   AddTodo({Key key}) : super(key: key);
 
@@ -23,12 +27,13 @@ class AddTodo extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 onSaved: (value) {
-                  c.todoModel.item = value;
+                  todoModel.item = value;
                 },
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Bu alan boş bırakılamaz";
                   } else {
+                    // Eğer hata yoksa null gönder.
                     return null;
                   }
                 },
@@ -40,7 +45,7 @@ class AddTodo extends StatelessWidget {
             ),
             // Kaydet butonu
             TextButton(
-              onPressed: _saveTodo,
+              onPressed: _checkForm,
               child: Text("KAYDET"),
             )
           ],
@@ -49,9 +54,14 @@ class AddTodo extends StatelessWidget {
     );
   }
 
-  _saveTodo() {
+  /// Görevi, dbye kaydeder.
+  /// lokal cihaza hive
+  _checkForm() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+
+      c.addTodo(todoModel);
+
       // kaydetmeye başla
     } else {
       Get.snackbar("Hata", "Lütfen form hatalarını düzeltin");
