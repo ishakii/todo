@@ -5,6 +5,7 @@ import 'package:todo/todo/widgets/todo_item.dart';
 
 import 'add_todo.dart';
 
+/// tüm görevlerin listelendiği sayfadır
 class TodoListScreen extends StatelessWidget {
   const TodoListScreen({Key key}) : super(key: key);
 
@@ -21,12 +22,9 @@ class TodoListScreen extends StatelessWidget {
           onPressed: () => Get.to(() => AddTodo()),
         ),
         body: Column(
-          children: [
-            //
-            ...c.todoList
-                .map((todoModel) => TodoItem(todoModel: todoModel))
-                .toList(),
-          ],
+          children: c.todoList
+              .map((todoModel) => TodoItem(todoModel: todoModel))
+              .toList(),
         ),
       ),
     );

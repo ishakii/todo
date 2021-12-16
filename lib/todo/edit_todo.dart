@@ -3,20 +3,20 @@ import 'package:get/get.dart';
 import 'package:todo/todo/todo_controller.dart';
 import 'package:todo/todo/todo_model.dart';
 
-class AddTodo extends StatelessWidget {
+class EditTodo extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TodoController c = Get.find<TodoController>();
 
   // Eklenecek to do nesnesini tutar.
-  final TodoModel todoModel = TodoModel();
+  final TodoModel todoModel;
 
-  AddTodo({Key key}) : super(key: key);
+  EditTodo({Key key, this.todoModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Görevler Ekle"),
+        title: Text("Görev Düzenle"),
       ),
       body: Form(
         key: _formKey,
@@ -26,6 +26,7 @@ class AddTodo extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                initialValue: todoModel.item,
                 onSaved: (value) {
                   todoModel.item = value;
                 },
@@ -46,7 +47,7 @@ class AddTodo extends StatelessWidget {
             // Kaydet butonu
             TextButton(
               onPressed: _checkForm,
-              child: Text("KAYDET"),
+              child: Text("GÜNCELLE"),
             )
           ],
         ),
@@ -60,8 +61,8 @@ class AddTodo extends StatelessWidget {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      // kaydetmeye başla
-      c.addTodo(todoModel);
+      // güncellemeye başla
+      c.editTodo(todoModel);
     } else {
       Get.snackbar("Hata", "Lütfen form hatalarını düzeltin");
     }

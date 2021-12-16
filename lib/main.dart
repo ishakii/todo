@@ -4,9 +4,11 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo/todo/todo_list.dart';
 
+import 'todo/constants.dart';
+
 Future<void> main() async {
   await Hive.initFlutter();
-  await Hive.openBox("todoList");
+  await Hive.openBox(todoBox);
 
   runApp(MyApp());
 }
@@ -27,6 +29,6 @@ class MyApp extends StatelessWidget {
 // Hafataya yapılacaklar
 // tamamlandı olarak işaretleme yapılacak
 // silme, güncelleme işlemleri
-// firebase kaydetme yapılacak
 
+// firebase kaydetme yapılacak
 // auth eklenecek

@@ -5,9 +5,13 @@ class TodoModel {
   // Görevin ismi
   String item;
 
+  // Görevin tarihi
+  int createdAt;
+
   TodoModel({
     this.isCompleted = false,
     this.item,
+    this.createdAt,
   });
 
   // Veritabanına yazarken kullanılır.
@@ -15,6 +19,7 @@ class TodoModel {
     return {
       'isCompleted': this.isCompleted,
       'item': this.item,
+      'createdAt': this.createdAt,
     };
   }
 
@@ -23,6 +28,7 @@ class TodoModel {
     return TodoModel(
       isCompleted: map['isCompleted'] as bool,
       item: map['item'] as String,
+      createdAt: map['createdAt'] as int,
     );
   }
 }
