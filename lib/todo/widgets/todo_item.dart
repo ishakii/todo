@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo/todo/edit_todo.dart';
+import 'package:todo/todo/add_todo_screen.dart';
 import 'package:todo/todo/todo_controller.dart';
-import 'package:todo/todo/todo_model.dart';
+import 'package:todo/todo/models/todo_model.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoModel todoModel;
@@ -24,7 +24,10 @@ class TodoItem extends StatelessWidget {
             : Colors.blueGrey.shade50,
         child: ListTile(
           // Düzenleme
-          onTap: () => Get.to(() => EditTodo(todoModel: todoModel)),
+          onTap: () {
+            c.todoModel = todoModel;
+            Get.to(() => AddTodoScreen());
+          },
           leading: IconButton(
             onPressed: () {
               c.tamamlandiYap(todoModel);

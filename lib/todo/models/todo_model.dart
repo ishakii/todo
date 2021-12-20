@@ -5,7 +5,7 @@ class TodoModel {
   // Görevin ismi
   String item;
 
-  // Görevin tarihi
+  // Görevin Oluşturulma tarihi
   int createdAt;
 
   TodoModel({

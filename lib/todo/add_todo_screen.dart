@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/todo/todo_controller.dart';
-import 'package:todo/todo/todo_model.dart';
 
-class EditTodo extends StatelessWidget {
+class AddTodoScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TodoController c = Get.find<TodoController>();
 
-  // Eklenecek to do nesnesini tutar.
-  final TodoModel todoModel;
-
-  EditTodo({Key key, this.todoModel}) : super(key: key);
+  AddTodoScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Görev Düzenle"),
+        title: Text(
+          c.todoModel.item == null ? "Görev Ekle" : "Görev Düzenle",
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -26,9 +24,9 @@ class EditTodo extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                initialValue: todoModel.item,
+                initialValue: c.todoModel.item,
                 onSaved: (value) {
-                  todoModel.item = value;
+                  c.todoModel.item = value;
                 },
                 validator: (value) {
                   if (value.isEmpty) {
@@ -47,7 +45,9 @@ class EditTodo extends StatelessWidget {
             // Kaydet butonu
             TextButton(
               onPressed: _checkForm,
-              child: Text("GÜNCELLE"),
+              child: Text(
+                c.todoModel.item == null ? "KAYDET" : "GÜNCELLE",
+              ),
             )
           ],
         ),
@@ -61,8 +61,8 @@ class EditTodo extends StatelessWidget {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      // güncellemeye başla
-      c.editTodo(todoModel);
+      // kaydetmeye başla
+      c.todoModel.createdAt == null ? c.createTodo() : c.editTodo();
     } else {
       Get.snackbar("Hata", "Lütfen form hatalarını düzeltin");
     }
