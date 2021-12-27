@@ -42,7 +42,7 @@ class AddTodoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // Kaydet butonu
+            // Kaydet/Güncelle butonu
             TextButton(
               onPressed: _checkForm,
               child: Text(
@@ -61,8 +61,8 @@ class AddTodoScreen extends StatelessWidget {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      // kaydetmeye başla
-      c.todoModel.createdAt == null ? c.createTodo() : c.editTodo();
+      // kaydetmeye/Güncellemeye başla
+      c.todoModel.createdAt == null ? c.createTodo() : c.updateTodo();
     } else {
       Get.snackbar("Hata", "Lütfen form hatalarını düzeltin");
     }

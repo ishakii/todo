@@ -29,20 +29,21 @@ class TodoMainScreen extends StatelessWidget {
           children: c.todoList
               .map((todoModel) => TodoItem(todoModel: todoModel))
               .toList(),
+          // children: _todoItems(c),
         ),
       ),
     );
   }
 
-// List<Widget> _todoItems(TodoController c) {
-//   List<Widget> todoItemWidgetsList = [];
-//
-//   for (TodoModel todoModel in c.todoList) {
-//     Widget w = TodoItem(todoModel: todoModel);
-//
-//     todoItemWidgetsList.add(w);
-//   }
-//
-//   return todoItemWidgetsList;
-// }
+  // List<Widget> _todoItems(TodoController c) {
+  //   List<Widget> todoItemWidgetsList = [];
+  //
+  //   for (TodoModel todoModel in c.todoList) {
+  //     Widget w = TodoItem(todoModel: todoModel);
+  //
+  //     todoItemWidgetsList.add(w);
+  //   }
+  //
+  //   return todoItemWidgetsList;
+  // }
 }
