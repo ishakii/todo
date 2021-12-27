@@ -11,17 +11,24 @@ class TodoController extends GetxController {
   /// Hem güncellenecek, hem oluşturalan to do nesnesini tutar.
   TodoModel todoModel;
 
+  Box box;
+
   @override
   void onInit() {
     // Lokal hafızadakini tüm todoların olduğu listeye ekler.
-    var box = Hive.box(todoBox);
+    box = Hive.box(todoBox);
 
+    _getAllTodos();
+
+    super.onInit();
+  }
+
+  _getAllTodos() {
     final List<MapEntry> gelenTumTodolar = box?.toMap()?.entries?.toList();
 
     if (gelenTumTodolar.isNotEmpty) {
       // print(gelenTumTodolar.first);
       gelenTumTodolar.forEach((e) => print(e));
-
       print(gelenTumTodolar.length);
 
       todoList = gelenTumTodolar
@@ -30,19 +37,7 @@ class TodoController extends GetxController {
 
       // To do ları sırala
       _todolariSirala();
-
-      // final List<TodoModel> tamamlananlarListesi =
-      //     todoList.where((element) => element.isCompleted).toList();
-      //
-      // todoList = todoList.where((element) => !element.isCompleted).toList();
-
-      // todoList.addAll(tamamlananlarListesi);
     }
-
-    // TodoModel todoModel = TodoModel.fromMap(Map<String, dynamic>.from(e));
-    // todoList.add(todoModel);
-
-    super.onInit();
   }
 
   /// Tüm toodların olduğu listeye yeni bir todos ekler.
@@ -52,7 +47,7 @@ class TodoController extends GetxController {
     todoList.add(todoModel);
 
     // lokal hafızaya kaydet
-    _saveData();
+    box.put(todoModel.createdAt.toString(), todoModel.toMap());
 
     // To do ları sırala
     _todolariSirala();
@@ -81,35 +76,35 @@ class TodoController extends GetxController {
       });
   }
 
-  _saveData() {
-    // lokal hafızadaki yeri tanımla
-    var box = Hive.box(todoBox);
-
-    // Kaydetceğimiz veriyi hazırla
-    // final Map<String, dynamic> entries = todoList.fold(
-    //   <String, dynamic>{},
-    //   (previousValue, element) =>
-    //       previousValue[element.createdAt.toString()] = element.toMap(),
-    // );
-    // print("entries" + entries.toString());
-    // print("entries length " + entries.length.toString());
-
-    Map<String, dynamic> map = {};
-    for (TodoModel todoModel in todoList) {
-      map[todoModel.createdAt.toString()] = todoModel.toMap();
-    }
-    print("map" + map.toString());
-    print("map length " + map.length.toString());
-
-    // veriyi lokal hafızaya kaydet
-    box.clear();
-    box.putAll(map);
-  }
+  // _saveData() {
+  //   // lokal hafızadaki yeri tanımla
+  //   var box = Hive.box(todoBox);
+  //
+  //   // Kaydetceğimiz veriyi hazırla
+  //   // final Map<String, dynamic> entries = todoList.fold(
+  //   //   <String, dynamic>{},
+  //   //   (previousValue, element) =>
+  //   //       previousValue[element.createdAt.toString()] = element.toMap(),
+  //   // );
+  //   // print("entries" + entries.toString());
+  //   // print("entries length " + entries.length.toString());
+  //
+  //   Map<String, dynamic> map = {};
+  //   for (TodoModel todoModel in todoList) {
+  //     map[todoModel.createdAt.toString()] = todoModel.toMap();
+  //   }
+  //   print("map" + map.toString());
+  //   print("map length " + map.length.toString());
+  //
+  //   // veriyi lokal hafızaya kaydet
+  //   box.clear();
+  //   box.putAll(map);
+  // }
 
   deleteTodo(TodoModel todoModel) {
     todoList.remove(todoModel);
 
-    _saveData();
+    box.delete(todoModel.createdAt.toString());
 
     // Kullanıcı arayüzünü yenile
     update();
@@ -117,14 +112,14 @@ class TodoController extends GetxController {
     Get.snackbar("Başarılı", "Görev listesinden görev silindi");
   }
 
-  /// Tüm todoların olduğu listeyi günceller
+  /// görevi günceller
   updateTodo() {
     todoList.removeWhere((element) => element.createdAt == todoModel.createdAt);
 
     todoList.add(todoModel);
 
     // lokale kaydet
-    _saveData();
+    box.put(todoModel.createdAt.toString(), todoModel.toMap());
 
     // Kullanıcı arayüzünü yenile
     update();
@@ -142,7 +137,7 @@ class TodoController extends GetxController {
     todoList.add(todoModel);
 
     // Lokal hafızaya to do ekler
-    _saveData();
+    box.put(todoModel.createdAt.toString(), todoModel.toMap());
 
     _todolariSirala();
 

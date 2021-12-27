@@ -26,9 +26,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Hafataya yapılacaklar
-// tamamlandı olarak işaretleme yapılacak
-// silme, güncelleme işlemleri
-
 // firebase kaydetme yapılacak
 // auth eklenecek
+
+// hata durumları, future işlemler
+// listview
